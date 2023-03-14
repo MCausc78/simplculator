@@ -1,6 +1,3 @@
-#ifndef CALCULATOR_EVALULATE_H
-#define CALCULATOR_EVALULATE_H 1
-
 #include "calculator/ast/expression.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -136,5 +133,3 @@ void ast_dump(FILE* out, struct ast_expression* expression)
 		fprintf(out, "Error(%d)", expression->type);
 	}
 }
-
-#endif /* CALCULATOR_EVALULATE_H */
