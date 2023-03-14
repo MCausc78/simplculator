@@ -173,19 +173,19 @@ struct ast_expression* calculator_parser_parse_expression(
 	case '\f':
 	case '\r':
 		return ast_make_binary_expression(type, lhs, rhs);
-	case '+':
+	case TOKEN_PLUS:
 		second_type = AST_BINARY_EXPRESSION_ADD;
 		break;
-	case '/':
+	case TOKEN_DIVIDE:
 		second_type = AST_BINARY_EXPRESSION_DIV;
 		break;
-	case '%':
+	case TOKEN_MODULO:
 		second_type = AST_BINARY_EXPRESSION_MOD;
 		break;
-	case '*':
+	case TOKEN_MULTIPLY:
 		second_type = AST_BINARY_EXPRESSION_MUL;
 		break;
-	case '-':
+	case TOKEN_MINUS:
 		second_type = AST_BINARY_EXPRESSION_SUB;
 		break;
 	default:
