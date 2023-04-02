@@ -50,14 +50,14 @@ int deep_index = 0;
 void ast_indent(FILE* out)
 {
 	for (int i = 0; i < deep_index; ++i) {
-		fputc(' ', stderr);
+		fputc(' ', out);
 	}
 }
 
 void ast_dump(FILE* out, struct ast_expression* expression)
 {
 	if (expression == NULL) {
-		fprintf(stderr, "nil");
+		fprintf(out, "nil");
 		return;
 	}
 	switch (expression->type) {

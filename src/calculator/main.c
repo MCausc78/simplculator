@@ -15,6 +15,10 @@
 #elif defined(__GNUC__)
 #define COMPILER "GCC"
 #define COMPILER_VERSION __VERSION__
+#elif defined(_MSC_VER)
+#define _CRT_SECURE_NO_WARNINGS 1
+#define COMPILER "MSVC"
+#define COMPILER_VERSION "?"
 #else
 #define COMPILER "Unknown"
 #define COMPILER_VERSION "Unknown"
@@ -30,6 +34,7 @@ const struct calculator_version version = { 1, 0 };
 
 int main(int argc, char** argv)
 {
+	(void) argc;
 	int flags = 0;
 	for (; *++argv; ) {
 		char* arg = *argv;

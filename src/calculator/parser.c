@@ -79,7 +79,7 @@ struct ast_expression* calculator_parser_parse(
 		/* Number */
 		{
 			number_t lhs = *(self->text - 1) - '0';
-			for (; isdigit(*self->text); ++self->text)
+			for (; isdigit((unsigned char) *self->text); ++self->text)
 			{
 				lhs = lhs * 10 + ((*self->text) - '0');
 			}
