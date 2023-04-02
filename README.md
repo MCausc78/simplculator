@@ -5,7 +5,14 @@ Toy calculator written in pure C language
 # Build
 
 ```bash
-s
+$ mkdir build
+$ cd build
+$ cmake ..
+...
+$ make
+...
+$ cd ..
+$ # A executable is in `build/simplculator`
 ```
 
 # Examples
