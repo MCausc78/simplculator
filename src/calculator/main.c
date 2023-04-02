@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "calculator/ast/expression.h"
 #include "calculator/evalulate.h"
 #include "calculator/parser.h"
@@ -16,7 +18,6 @@
 #define COMPILER "GCC"
 #define COMPILER_VERSION __VERSION__
 #elif defined(_MSC_VER)
-#define _CRT_SECURE_NO_WARNINGS 1
 #define COMPILER "MSVC"
 #define COMPILER_VERSION "?"
 #else
@@ -57,10 +58,6 @@ int main(int argc, char** argv)
 			continue;
 		}
 		fprintf(stderr, "invalid flag: \"%s\"\n", arg);
-	}
-	if (flags & FLAGS_INTERACTIVE) {
-	}
-	if (flags & FLAGS_DISPLAY_TREE) {
 	}
 	char buffera[255];
 	char* buffer = buffera;
