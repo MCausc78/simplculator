@@ -148,7 +148,6 @@ struct ast_expression* calculator_parser_parse_expression(
 		return lhs;
 	default:
 		ast_free_expression(lhs);
-		printf("\"%s\"\n", self->text-10);
 		return NULL;
 	}
 	struct ast_expression* rhs = calculator_parser_parse(self);
