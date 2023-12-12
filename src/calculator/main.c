@@ -58,6 +58,7 @@ int main(int argc, char** argv)
 			continue;
 		}
 		fprintf(stderr, "invalid flag: \"%s\"\n", arg);
+    return 1;
 	}
 	char buffera[255];
 	char* buffer = buffera;
@@ -94,7 +95,16 @@ int main(int argc, char** argv)
 				ast_free_expression(expression);
 				continue;
 			}
-			fprintf(stdout, "%d\n", ast_evalulate(expression));
+      int err = 0;
+      int r = ast_evalulate(expression, &err);
+      if (err != 0) {
+        static const char* errs[] = {
+          "division by zero"
+        };
+        fprintf(stderr, "error: %s\n", errs[err - 1]);
+      }
+      else 
+			  printf("%d\n", r);
 			ast_free_expression(expression);
 			continue;
 		}

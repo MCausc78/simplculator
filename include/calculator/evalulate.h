@@ -7,7 +7,7 @@ extern "C" {
 
 #include "calculator/ast/expression.h"
 
-number_t ast_evalulate(struct ast_expression* expression);
+number_t ast_evalulate(struct ast_expression* expression, int* err);
 
 extern int deep_index;
 

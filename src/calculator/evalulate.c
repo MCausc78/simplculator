@@ -2,19 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-number_t ast_evalulate(struct ast_expression* expression)
+number_t ast_evalulate(struct ast_expression* expression, int* err)
 {
 	if (expression == NULL) {
-		fprintf(stderr, "ast_evalulate: fatal error: null expression (`expression` was %p)\n", (void*) expression);
+		fprintf(stderr, "ast_evalulate: fatal error: null expression\n");
 		exit(1);
 	}
 	switch (expression->type) {
 	case AST_EXPRESSION_UNARY:
 		switch (expression->expression.unary->type) {
 		case AST_UNARY_EXPRESSION_BITWISE_NOT:
-			return ~ast_evalulate(expression->expression.unary->lhs);
+			return ~ast_evalulate(expression->expression.unary->lhs, err);
 		case AST_UNARY_EXPRESSION_NEGATE:
-			return -ast_evalulate(expression->expression.unary->lhs);
+			return -ast_evalulate(expression->expression.unary->lhs, err);
 		default:
 			fprintf(stderr, "ast_evalulate: fatal error: unknown unary expression type: %d", expression->expression.unary->type);
 			exit(3);
@@ -23,25 +23,41 @@ number_t ast_evalulate(struct ast_expression* expression)
 	case AST_EXPRESSION_BINARY:
 		switch (expression->expression.binary->type) {
 		case AST_BINARY_EXPRESSION_ADD:
-			return ast_evalulate(expression->expression.binary->lhs) + ast_evalulate(expression->expression.binary->rhs);
+			return ast_evalulate(expression->expression.binary->lhs, err) + ast_evalulate(expression->expression.binary->rhs, err);
 		case AST_BINARY_EXPRESSION_DIV:
-			return ast_evalulate(expression->expression.binary->lhs) / ast_evalulate(expression->expression.binary->rhs);
+      {
+        number_t x = ast_evalulate(expression->expression.binary->lhs, err);
+        number_t y = ast_evalulate(expression->expression.binary->rhs, err);
+        if (y == 0) {
+          if (err)
+            *err = 1;
+          return 0;
+        }
+			  return x / y;
+      }
 		case AST_BINARY_EXPRESSION_MOD:
-			return ast_evalulate(expression->expression.binary->lhs) % ast_evalulate(expression->expression.binary->rhs);
+      {
+        number_t x = ast_evalulate(expression->expression.binary->lhs, err);
+        number_t y = ast_evalulate(expression->expression.binary->rhs, err);
+        if (y == 0) {
+          if (err)
+            *err = 1;
+          return 0;
+        }
+			  return x % y;
+      }
 		case AST_BINARY_EXPRESSION_MUL:
-			return ast_evalulate(expression->expression.binary->lhs) * ast_evalulate(expression->expression.binary->rhs);
+			return ast_evalulate(expression->expression.binary->lhs, err) * ast_evalulate(expression->expression.binary->rhs, err);
 		case AST_BINARY_EXPRESSION_SUB:
-			return ast_evalulate(expression->expression.binary->lhs) - ast_evalulate(expression->expression.binary->rhs);
+			return ast_evalulate(expression->expression.binary->lhs, err) - ast_evalulate(expression->expression.binary->rhs, err);
 		default:
-			fprintf(stderr, "ast_evalulate: fatal error: unknown binary expression type: %d", expression->expression.unary->type);
-			exit(4);
+			__builtin_unreachable();
 		}
 		break;
 	case AST_EXPRESSION_NUMBER:
 		return expression->expression.number->lhs;
 	default:
-		fprintf(stderr, "ast_evalulate: fatal error: unknown expression type: %d", expression->type);
-		exit(2);
+		__builtin_unreachable();
 	}
 }
 
